@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  discord-rpc-server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: motorcycle2discord-rpc
+    restart: unless-stopped
+    ports:
+      - "8089:8080" # APIアクセスポート (競合回避のためホスト側を8089にマッピング)
+      - "6080:6080" # WebブラウザVNCアクセスポート (noVNC用)
+      - "5900:5900" # デスクトップVNCクライアント用ポート (オプション)
+    environment:
+      - DISPLAY=:99
+      - PORT=8080
+      - ENABLE_VNC=true  # 初回ログイン完了後は false に変更して再起動することを推奨します
+      - CONFIG_PATH=/app/config.json
+      - TZ=Asia/Tokyo
+    volumes:
+      # Discordのログイン状態やセッション情報をマウントして永続化します
+      - discord-config:/root/.config/discord
+      # 設定ファイルをホスト側から編集可能にするためにマウントします
+      - ./config/config.json:/app/config.json:ro
+
+volumes:
+  discord-config:
+    driver: local

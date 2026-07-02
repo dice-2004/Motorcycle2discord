@@ -1,0 +1,16 @@
+{
+  "activities": {
+    "riding": {
+      "name": "運転中",
+      "details": "運転中",
+      "state": "連絡が遅れます",
+      "client_id": "1521714199385083954"
+    },
+    "working": {
+      "name": "仕事中",
+      "details": "仕事中：連絡が遅れます",
+      "state": "連絡は遅れます 💻",
+      "client_id": "YOUR_DISCORD_APPLICATION_ID_FOR_WORKING"
+    }
+  }
+}
