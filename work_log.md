@@ -50,9 +50,10 @@
 * **DiscordのGPU関連フラグ追加 (無限ローディング対策)**:
   * 仮想ディスプレイ上でのGPU初期化エラーや共有メモリ不足による、Discordの「starting (launching)」無限ロード・フリーズ問題を修正。
   * `process.go` のDiscord起動引数に `--disable-gpu` および `--disable-dev-shm-usage` フラグを追加。
-* **起動タイムアウト時間の延長 (30秒から90秒へ)**:
-  * 初回起動時やネットワーク環境による起動遅延の際、Discordの自動ログイン（FAST CONNECT）が完了する前に30秒が経過し、Goサーバーがエラー判定を下してDiscordをキルしてしまう問題に対応。
   * `service.go` 内のソケット生成待ち時間を90秒に延長し、正常起動を安全に待てるように調整。
+* **RPC接続時のリトライロジックの導入 (接続一時失敗対策)**:
+  * Discordがソケットファイルを一時的に削除・再生成しているタイミングなどで、Goサーバーがソケット検知直後に接続した際に `dial unix /tmp/discord-ipc-0: connect: no such file or directory` が発生し、起動処理が失敗（強制終了）する問題に対応。
+  * `rpc.go` にて `client.Login` の呼び出しに対して 1秒おきに最大5回のリトライロジックを実装。
 
 ---
 

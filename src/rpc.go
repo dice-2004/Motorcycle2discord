@@ -30,8 +30,19 @@ func (rm *RPCManager) SetActivity(act Activity) error {
 	// RPCサーバー（Discordアプリ）にログイン
 	if !rm.isConnected {
 		log.Printf("Connecting to Discord RPC using Client ID: %s...\n", act.ClientID)
-		if err := client.Login(act.ClientID); err != nil {
-			return err
+		
+		var loginErr error
+		for i := 1; i <= 5; i++ {
+			loginErr = client.Login(act.ClientID)
+			if loginErr == nil {
+				break
+			}
+			log.Printf("Failed to connect to Discord RPC (attempt %d/5): %v. Retrying in 1s...\n", i, loginErr)
+			time.Sleep(1 * time.Second)
+		}
+		
+		if loginErr != nil {
+			return loginErr
 		}
 		rm.isConnected = true
 		rm.currentClientID = act.ClientID
