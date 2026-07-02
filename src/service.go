@@ -111,8 +111,8 @@ func (c *HeadlessDiscordController) startupSequence(act Activity, typeName strin
 		return
 	}
 
-	// 2. ソケットの出現待ち（最大30秒）
-	if err := c.pm.WaitForIPCSocket(30 * time.Second); err != nil {
+	// 2. ソケットの出現待ち（最大90秒）
+	if err := c.pm.WaitForIPCSocket(90 * time.Second); err != nil {
 		log.Printf("Discord IPC socket not found: %v\n", err)
 		_ = c.pm.StopDiscord()
 		c.resetState()

@@ -24,7 +24,7 @@ sequenceDiagram
     Server-->>iPhone: 202 OK (非同期で起動処理を継続)
     deactivate Server
     
-    Note over Server, Discord: Discordの起動待ち (最大30秒)
+    Note over Server, Discord: Discordの起動待ち (最大90秒)
     Discord->>Discord: 起動完了・自動ログイン
     Note over Server, Discord: IPCソケット (/tmp/discord-ipc-0) の生成を確認
     
